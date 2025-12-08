@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/analytics-service" />
             <option value="$PROJECT_DIR$/discovery-service" />
+            <option value="$PROJECT_DIR$/function-service" />
             <option value="$PROJECT_DIR$/gateway-service" />
             <option value="$PROJECT_DIR$/inventory-service" />
             <option value="$PROJECT_DIR$/order-service" />
