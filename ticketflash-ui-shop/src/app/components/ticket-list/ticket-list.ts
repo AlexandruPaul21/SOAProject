@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ApiService} from '../../services/api';
+import {ApiService} from '../services/api';
 
 @Component({
   selector: 'app-ticket-list',

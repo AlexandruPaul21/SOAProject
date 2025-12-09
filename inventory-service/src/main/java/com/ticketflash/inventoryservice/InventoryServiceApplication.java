@@ -16,13 +16,13 @@ public class InventoryServiceApplication {
         SpringApplication.run(InventoryServiceApplication.class, args);
     }
 
-    // Optional: Pre-load some data on startup so you have something to test
     @Bean
     public CommandLineRunner loadData(ItemRepository repository) {
         return args -> {
             if (repository.count() == 0) {
                 repository.save(new Item(null, "Coldplay Concert", "Live in London", 150.00, 100));
                 repository.save(new Item(null, "Champions League Final", "Wembley Stadium", 300.00, 50));
+                repository.save(new Item(null, "Super Bowl Final", "The most watched from USA", 3000.00, 200));
             }
         };
     }

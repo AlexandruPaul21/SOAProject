@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ApiService} from '../../services/api';
+import {ApiService} from '../services/api';
 import {interval, startWith, Subscription, switchMap} from 'rxjs';
 import {CommonModule} from '@angular/common';
 

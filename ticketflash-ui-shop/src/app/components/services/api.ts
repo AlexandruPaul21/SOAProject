@@ -18,8 +18,28 @@ export class ApiService {
   private gatewayUrl = 'http://localhost:8080';
   private keycloakUrl = 'http://localhost:8180/realms/ticketflash-realm/protocol/openid-connect/token';
 
+  // --- STATE ---
+  private _token = '';
+  private _username = '';
+
+  setCredentials(token: string, username: string) {
+    this._token = token;
+    this._username = username;
+    // FIX 1: Persist to LocalStorage so Remote Apps can see it
+    localStorage.setItem('tf_token', token);
+    localStorage.setItem('tf_username', username);
+  }
+
+  // Helper to get token from memory OR storage
+  private getToken(): string {
+    return this._token || localStorage.getItem('tf_token') || '';
+  }
+
+  private getUsername(): string {
+    return this._username || localStorage.getItem('tf_username') || 'guest';
+  }
+
   login(username: string, password: string): Observable<any> {
-    console.log(username, password);
     const body = new URLSearchParams();
     body.set('client_id', 'ticketflash-client');
     body.set('username', username);
@@ -59,18 +79,21 @@ export class ApiService {
   }
 
   // --- Orders ---
-  buyTicket(item: Item, token: string) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  buyTicket(item: any) {
+    // FIX 2: Read from the helper method (which checks localStorage)
+    const token = this.getToken();
+    const username = this.getUsername();
 
+    if (!token) {
+      console.warn('No token found in ApiService or LocalStorage');
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const orderPayload = {
       itemId: item.id,
       quantity: 1,
-      userId: 'user_from_token' // In real app, decode JWT to get ID
+      userId: username
     };
-
-    return this.http.post(`${this.gatewayUrl}/api/orders`, orderPayload, {
-      headers,
-      responseType: 'text'
-    });
+    return this.http.post(`${this.gatewayUrl}/api/orders`, orderPayload, { headers, responseType: 'text' });
   }
 }

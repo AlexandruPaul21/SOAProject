@@ -1,7 +1,7 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {ApiService} from '../../services/api';
+import {ApiService} from '../services/api';
 
 @Component({
   selector: 'app-navbar',
@@ -61,14 +61,18 @@ export class NavbarComponent {
 
   private api = inject(ApiService);
 
-  username = ''; // Default for convenience
+  @Output() usernameChange = new EventEmitter<string>();
+
+  username = '';
   password = '';
 
   onLogin() {
     this.api.login(this.username, this.password).subscribe({
       next: (res: any) => {
         console.log('Login Success:', res);
+        this.token = res.access_token;
         this.tokenChange.emit(res.access_token);
+        this.usernameChange.emit(this.username);
       },
       error: (err) => {
         console.error(err);
@@ -78,6 +82,7 @@ export class NavbarComponent {
   }
 
   onLogout() {
+    this.token = '';
     this.tokenChange.emit('');
   }
 }
