@@ -27,7 +27,6 @@ public class ItemController {
         return itemRepository.save(item);
     }
 
-    // Used by Order Service to check stock
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Item getItem(@PathVariable Long id) {

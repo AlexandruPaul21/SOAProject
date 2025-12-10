@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
     public static final String QUEUE = "stock_queue";
 
-    // 1. Define the Queue so this service can create it if missing
     @Bean
     public Queue queue() {
         return new Queue(QUEUE);
     }
 
-    // 2. We need the JSON converter to turn the message back into a Java Object
     @Bean
     public MessageConverter converter() {
         return new Jackson2JsonMessageConverter();

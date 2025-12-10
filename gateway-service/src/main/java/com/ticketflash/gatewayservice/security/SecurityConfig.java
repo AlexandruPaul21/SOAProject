@@ -21,14 +21,12 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                // Use the explicit CORS configuration source defined below
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/eureka/**").permitAll()
                         .pathMatchers("/api/inventory/**").permitAll()
                         .pathMatchers("/api/analytics/**").permitAll()
                         .pathMatchers("/ws/**").permitAll()
-                        // Explicitly allow OPTIONS (Preflight) requests for any path
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers("/api/orders/**").authenticated()
                         .anyExchange().permitAll()

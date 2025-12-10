@@ -17,7 +17,6 @@ import java.util.function.Consumer;
 @Slf4j
 public class TicketFunction {
 
-    // Define a constant folder for storage
     public static final String STORAGE_DIR = "generated-tickets";
 
     @Bean
@@ -28,29 +27,23 @@ public class TicketFunction {
     private void createPdf(OrderEvent event) {
         Document document = new Document();
         try {
-            // Ensure directory exists
             File directory = new File(STORAGE_DIR);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
 
-            // Create File Path: generated-tickets/ticket_123_abc.pdf
             String fileName = "ticket_" + event.getItemId() + "_" + UUID.randomUUID().toString().substring(0, 8) + ".pdf";
             File file = new File(directory, fileName);
 
             PdfWriter.getInstance(document, new FileOutputStream(file));
 
             document.open();
-
-            // Fancy Header
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24, new java.awt.Color(128, 0, 128));
             Paragraph title = new Paragraph("TicketFlash Official Ticket", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
             document.add(new Paragraph("\n"));
-
-            // Ticket Details
             Font contentFont = FontFactory.getFont(FontFactory.COURIER, 16);
             document.add(new Paragraph("Event ID:   " + event.getItemId(), contentFont));
             document.add(new Paragraph("Admit:      " + event.getQuantity(), contentFont));

@@ -22,22 +22,16 @@ public class OrderController {
 
     @PostMapping
     public String placeOrder(@RequestBody Order order) {
-        // Save in DB
         order.setOrderId(UUID.randomUUID().toString());
         order.setStatus("PENDING");
 
-        // Create Event
         OrderEvent event = new OrderEvent();
         event.setStatus("PENDING");
         event.setMessage("Order committed, please update stock");
         event.setItemId(order.getItemId());
         event.setQuantity(order.getQuantity());
 
-        // Send to RabbitMQ
         orderProducer.sendMessage(event);
-
-        // 4. Send Real-time Notification to Frontend
-        // We push a simple string to anyone subscribed to "/topic/orders"
         String notification = "New Ticket Sold! Item ID: " + order.getItemId();
         messagingTemplate.convertAndSend("/topic/orders", notification);
 

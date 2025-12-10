@@ -30,7 +30,6 @@ public class RabbitMqConfig {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
-    // Allows sending JSON objects instead of byte arrays
     @Bean
     public MessageConverter converter() {
         return new Jackson2JsonMessageConverter();

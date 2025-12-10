@@ -20,7 +20,6 @@ public class InventoryConsumer {
     public void consume(OrderEvent event) {
         LOGGER.info(String.format("Received message -> %s", event.toString()));
 
-        // Logic: Find item and reduce stock
         Item item = itemRepository.findById(event.getItemId()).orElse(null);
 
         if (item != null) {
@@ -31,7 +30,6 @@ public class InventoryConsumer {
                 LOGGER.info("Stock updated for Item ID: " + event.getItemId());
             } else {
                 LOGGER.warn("Insufficient stock for Item ID: " + event.getItemId());
-                // In a real app, you would send a "OrderFailedEvent" back to a different queue
             }
         }
     }

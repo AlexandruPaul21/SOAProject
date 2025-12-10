@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    // List all generated PDFs
     @GetMapping
     public List<String> listTickets() {
         File folder = new File(TicketFunction.STORAGE_DIR);
@@ -36,7 +35,6 @@ public class TicketController {
                 .collect(Collectors.toList());
     }
 
-    // Download a specific PDF
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> downloadTicket(@PathVariable String filename) {
         try {
